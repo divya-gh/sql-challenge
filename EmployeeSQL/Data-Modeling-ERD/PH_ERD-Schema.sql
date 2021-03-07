@@ -1,6 +1,9 @@
 ﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
+-- Link to schema: https://app.quickdatabasediagrams.com/#/d/AKaUnC
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
+-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
+-- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 -- ERD Table was created using https://app.quickdatabasediagrams.com/
 -- Sketch out an ERD of the tables
 -- Sketch ERD for departmnet.csv
@@ -30,11 +33,11 @@ CREATE TABLE "titles" (
 CREATE TABLE "employees" (
     "emp_no" int   NOT NULL,
     "emp_title_id" VARCHAR(50)   NOT NULL,
-    "birth_date" VARCHAR(50)   NOT NULL,
+    "birth_date" DATE   NOT NULL,
     "first_name" VARCHAR(150)   NOT NULL,
     "last_name" VARCHAR(150)   NOT NULL,
     "sex" VARCHAR(50)   NOT NULL,
-    "hire_date" VARCHAR(50)   NOT NULL,
+    "hire_date" DATE   NOT NULL,
     CONSTRAINT "pk_employees" PRIMARY KEY (
         "emp_no"
      )

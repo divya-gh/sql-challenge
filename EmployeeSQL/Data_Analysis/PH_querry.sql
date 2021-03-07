@@ -6,7 +6,7 @@ SELECT * FROM employees
 ORDER BY emp_no;
 
 -- Select 'salary' table
-SELECT * FROM salary ;
+SELECT * FROM salary;
 
 -- Querry using Inner join to access the columns from both the tables
 SELECT e.emp_no as id, e.last_name , e.first_name , e.sex , s.salary
@@ -17,15 +17,11 @@ ORDER BY emp_no;
 
 -- 2. List first name, last name, and hire date for employees who were hired in 1986.
 
--- Cast VARCHAR "hire_date" format to date (YYYY-MM-DD) format
-ALTER TABLE employees 
-ALTER COLUMN hire_date TYPE DATE USING to_date(hire_date, 'MM/DD/YYYY')
-
 -- Selecting employees hired in 1986
 SELECT first_name , last_name , hire_date
 FROM employees
-WHERE hire_date BETWEEN '1986/1/1' AND '1986/12/31'
-ORDER BY hire_date; 
+WHERE hire_date BETWEEN '1986-1-1' AND '1986-12-31'
+ORDER BY hire_date ;
 
 
 -- 3. List the manager of each department with the following information: 
@@ -40,13 +36,13 @@ SELECT * FROM dept_manager;
 -- select the employees table for their names
 SELECT * FROM employees;
 
---Inner join to select the required columns
+--METHOD 1 : Inner join to select the required columns
 SELECT dt.dept_no , d.dept_name, dt.emp_no, e.last_name , e.first_name 
 FROM department d
 INNER JOIN dept_manager dt USING(dept_no)
 INNER JOIN employees e USING(emp_no)
 
---Create a CTE to ensure results are same (debugging)
+--meTHOD 2 : Create a CTE to ensure results are same (debugging)
 -- can be used for debugging
 WITH mgr AS (SELECT emp_no ,  last_name , first_name
 			 FROM employees 
@@ -60,14 +56,30 @@ WHERE mgr.emp_no = dept.emp_no ;
 -- 4. List the department of each employee with the following information: 
 -- employee number, last name, first name, and department name.
 	 
+-- select the employees table for their names
+SELECT * FROM employees
+ORDER BY emp_no;
 -- Select dept_emp table for the department number
-SELECT * FROM dept_emp
+SELECT * FROM dept_emp;
 
--- Select employs and their department names
-SELECT e.emp_no , e.last_name , e.first_name , d.dept_no
-FROM employees e , dept_emp d
-WHERE e.emp_no = d.emp_no 
-ORDER BY e.emp_no ;
+-- select the department table for department name
+SELECT * FROM department;
+
+-- Create a view to Filter and select emp_no and dept_name suing conditions
+CREATE VIEW emp_dept AS (SELECT d_e.emp_no, d.dept_name 
+						 FROM department d , dept_emp d_e
+						 WHERE d_e.dept_no = d.dept_no);
+
+SELECT * FROM emp_dept;
+
+-- select employee number, last name, first name, and department name by inner joining view table and employees table
+SELECT e.emp_no , e.first_name , e.last_name , e_d.dept_name
+FROM employees e
+INNER JOIN emp_dept e_d USING(emp_no);
+
+-- Drop view tables if not needed
+--DROP VIEW emp_dept ;
+
 
 -- 5. List first name, last name, and sex for employees whose first name is "Hercules" and last names begin with "B."
 SELECT first_name , last_name , sex
@@ -131,7 +143,7 @@ ORDER BY e.emp_no ;
 
 --In descending order, list the frequency count of employee last names, i.e., how many employees share each last name.
 
---count last_names grouped by last name from the employee table
+--count last_names grouped by last name from the employee table in DESC
 SELECT last_name , count(last_name) "last_name Total" FROM employees
 GROUP BY last_name
 ORDER BY "last_name Total" DESC;
